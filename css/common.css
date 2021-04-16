@@ -1,0 +1,58 @@
+body {
+  background-color: #eeeeee;
+  position: absolute;
+  margin: auto;
+
+  font-family: Arial, Verdana, sans-serif;
+  text-align: center;
+
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  width: 315px;
+  height: 200px;
+}
+
+input {
+  border: 0px;
+  font-size: 12px;
+  outline: none;
+  text-align: center;
+}
+
+button {
+  border: 1px solid #ffffff;
+  cursor: pointer;
+  outline: none;
+}
+
+button:hover {
+  border-color: #aaaaaa;
+}
+
+button:active {
+  background-color: #ffffff;
+}
+
+a {
+  color: #6699cc;
+  text-decoration: none;
+}
+
+a:active {
+  color: #336699;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #336699;
+}
+
+a:visited {
+}
+
+.counter {
+  visibility: hidden;
+}
