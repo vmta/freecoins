@@ -36,6 +36,13 @@ button:active {
   background-color: #ffffff;
 }
 
+select {
+  background-color: #eeeeee;
+  border: 1px solid #ffffff;
+  outline: none;
+  width: 5.5em;
+}
+
 a {
   color: #6699cc;
   text-decoration: none;
