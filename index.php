@@ -13,26 +13,28 @@
 
 <?php
 
-require "include/config.php";
+$network_type = (isset($_POST['network']) && !empty($_POST['network'])) ? $_POST['network'] : "mainnet";
+$config_file = "include/config." . $network_type . ".php";
+require $config_file;
 
-$str = '';
+/* Autoload and register any classes not previously loaded */
+spl_autoload_register(function ($class_name){
+  $classFile = "include/" . $class_name . ".php";
+  if( is_file($classFile) && ! class_exists($class_name) )
+    include $classFile;
+});
+
+/* Create Block object */
+$block = new Block($server, $auth, $debug);
+
 
 $_SITE_URL = $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'];
 $_TIME_OUT = 3600;
 
+$str = '';
+
+
 if ($_POST["claim"] == 1) {
-
-
-  /* Autoload and register any classes not previously loaded */
-  spl_autoload_register(function ($class_name){
-    $classFile = "include/" . $class_name . ".php";
-    if( is_file($classFile) && ! class_exists($class_name) )
-      include $classFile;
-  });
-
-
-  /* Create Block object */
-  $block = new Block($server, $auth, $debug);
 
   /* Check if given address is valid */
   if ($block->validateaddress($_POST["address"])["isvalid"]) {
@@ -114,7 +116,7 @@ if ($_POST["claim"] == 1) {
   } else {
 
     /* Address is invalid, inform the client */
-    $str = "Address " . $_POST["address"] . " is invalid.";
+    $str = "Address " . $_POST["address"] . " is invalid on " . $_POST["network"] . ".";
 
   }
 
@@ -124,8 +126,12 @@ if ($_POST["claim"] == 1) {
     $str = "<p>Claim Free UMKoins</p>" .
       "<form action='' method='post' autocomplete='on'>" .
       "    <input type='hidden' name='claim' id='claim' value='1'>" .
-      "    <input type='text' name='address' id='address' placeholder='1FeDNQk5FuNCxJK7un4NhW8hRjpSC99g5t' size='34'>" .
-      "    <button type='submit'>Claim</button>" .
+      "    <p><input type='text' name='address' id='address' placeholder='1FeDNQk5FuNCxJK7un4NhW8hRjpSC99g5t' size='34'></p>" .
+      "    <p><select name='network' id='network'>" .
+      "        <option value='mainnet' selected>Mainnet</option>" .
+      "        <option value='testnet'>Testnet</option>" .
+      "    </select>" .
+      "    <button type='submit'>Claim</button></p>" .
       "</form>";
 
 }
