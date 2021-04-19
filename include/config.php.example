@@ -1,7 +1,0 @@
-<?php
-
-$server = "http://rpc.server";
-$auth = "rpc.user:rpc.password";
-$debug = false;
-
-?>
