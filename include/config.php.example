@@ -1,0 +1,18 @@
+<?php
+
+$_SERVER = array(
+    "mainnet" => "http://rpc_mainnet:6332",
+    "testnet" => "http://rpc_testnet:16332"
+);
+
+$_AUTH = array(
+    "mainnet" => "rpcmainnet:rpcmainnetpass",
+    "testnet" => "rpctestnet:rpctestnetpass"
+);
+
+$_DEBUG = array(
+    "mainnet" => false,
+    "testnet" => true
+);
+
+?>

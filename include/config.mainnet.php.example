@@ -1,7 +1,0 @@
-<?php
-
-$server = "http://rpc:6332";
-$auth = "rpcuser:rpcpass";
-$debug = true;
-
-?>
