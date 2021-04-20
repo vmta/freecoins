@@ -14,7 +14,6 @@
 <?php
 
 $network_type = (isset($_POST['network']) && !empty($_POST['network'])) ? $_POST['network'] : "mainnet";
-//$config_file = "include/config." . $network_type . ".php";
 $config_file = "include/config.php";
 require $config_file;
 
@@ -77,7 +76,6 @@ if ($_POST["claim"] == 1) {
       /* User already received a payment in TIME_OUT period */
       $_TIME_OUT_REMAINDER = $_ADDR_ARRAY[$_POST['address']] + $_TIME_OUT - time();
       $str = "<p>Time till next Free UMKoins claim</p>" .
-//             "<p class='counter' name='counter' id='counter'><span name='hours' id='hours'>00</span>:<span name='minutes' id='minutes'>00</span>:<span name='seconds' id='seconds'>00</span></p>" .
              "<p class='counter' name='counter' id='counter'>&nbsp;</p>" .
              "<script type='text/javascript' src='js/counter.js'></script>" .
              "<script type='text/javascript'>" .
@@ -85,8 +83,6 @@ if ($_POST["claim"] == 1) {
              "var SITE_URL = 'http://" . $_SITE_URL . "';" .
              "setInterval(counter, 1000);" .
              "</script>";
-
-
 
     } else {
 
