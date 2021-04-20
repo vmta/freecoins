@@ -14,8 +14,13 @@
 <?php
 
 $network_type = (isset($_POST['network']) && !empty($_POST['network'])) ? $_POST['network'] : "mainnet";
-$config_file = "include/config." . $network_type . ".php";
+//$config_file = "include/config." . $network_type . ".php";
+$config_file = "include/config.php";
 require $config_file;
+
+$server = $_SERVER[$network_type];
+$auth = $_AUTH[$network_type];
+$debug = $_DEBUG[$network_type];
 
 /* Autoload and register any classes not previously loaded */
 spl_autoload_register(function ($class_name){
@@ -94,9 +99,8 @@ if ($_POST["claim"] == 1) {
       if ($tx) {
 
         /* Successful transaction, construct the link for client to verify */
-        $str = "<p>Check transaction <a target='_blank' href='http://www.umkoin.org/en/blockexplorer.php?net=testnet&txid=" . $tx . "'>here</a>.</p>" .
+        $str = "<p>Check transaction <a target='_blank' href='http://www.umkoin.org/en/blockexplorer.php?net=" . $network_type . "&txid=" . $tx . "'>here</a>.</p>" .
                "<p class='counter' name='counter' id='counter'>&nbsp;</p>" .
-//               "<p><span name='hours' id='hours'>&nbsp;</span>:<span name='minutes' id='minutes'>&nbsp;</span>:<span name='seconds' id='seconds'>&nbsp;</span></p>" .
                "<script type='text/javascript' src='js/counter.js'></script>" .
                "<script type='text/javascript'>" .
                "var TIME_OUT = " . $_TIME_OUT . ";" .
@@ -116,7 +120,7 @@ if ($_POST["claim"] == 1) {
   } else {
 
     /* Address is invalid, inform the client */
-    $str = "Address " . $_POST["address"] . " is invalid on " . $_POST["network"] . ".";
+    $str = "Address " . $_POST["address"] . " is invalid on " . $network_type . ".";
 
   }
 
