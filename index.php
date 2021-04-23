@@ -13,13 +13,10 @@
 
 <?php
 
-$network_type = (isset($_POST['network']) && !empty($_POST['network'])) ? $_POST['network'] : "mainnet";
-$config_file = "include/config.php";
-require $config_file;
+require "include/config.php";
 
-$server = $_SERVER[$network_type];
-$auth = $_AUTH[$network_type];
-$debug = $_DEBUG[$network_type];
+$NET_TYPE = (isset($_POST['network']) && !empty($_POST['network'])) ? $_POST['network'] : "mainnet";
+$SITE_URL = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['PHP_SELF'];
 
 /* Autoload and register any classes not previously loaded */
 spl_autoload_register(function ($class_name){
@@ -29,13 +26,23 @@ spl_autoload_register(function ($class_name){
 });
 
 /* Create Block object */
-$block = new Block($server, $auth, $debug);
+$block = new Block($_SERVER_[$NET_TYPE], $_AUTH_[$NET_TYPE]);
 
-
-$_SITE_URL = $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'];
-$_TIME_OUT = 3600;
 
 $str = '';
+
+
+/* Test if a wallet has an associated address */
+if (empty($block->listreceivedbyaddress()[0]["address"])) {
+    if (!empty($block->getnewaddress())) {
+        print_r("<p>Successfully created address:<br>" . $block->listreceivedbyaddress()[0]["address"] . "</p>");
+    }
+}
+/* Test if a wallet has positive balance */
+if ($block->getbalance() < 0.00001000) {
+    print_r("<p>Deposit UMKoins to address:<br>" . $block->listreceivedbyaddress()[0]["address"] . ".</p>");
+    exit();
+}
 
 
 if ($_POST["claim"] == 1) {
@@ -71,16 +78,16 @@ if ($_POST["claim"] == 1) {
      * Test if a user's address received a payment in the last TIME_OUT period
      * and let them wait or proceed further.
      */
-    if ($_ADDR_ARRAY[$_POST['address']] > time() - $_TIME_OUT) {
+    if ($_ADDR_ARRAY[$_POST['address']] > time() - $_TIME_OUT_[$NET_TYPE]) {
 
       /* User already received a payment in TIME_OUT period */
-      $_TIME_OUT_REMAINDER = $_ADDR_ARRAY[$_POST['address']] + $_TIME_OUT - time();
+      $_TIME_OUT_REMAINDER = $_ADDR_ARRAY[$_POST['address']] + $_TIME_OUT_[$NET_TYPE] - time();
       $str = "<p>Time till next Free UMKoins claim</p>" .
              "<p class='counter' name='counter' id='counter'>&nbsp;</p>" .
              "<script type='text/javascript' src='js/counter.js'></script>" .
              "<script type='text/javascript'>" .
              "var TIME_OUT = " . $_TIME_OUT_REMAINDER . ";" .
-             "var SITE_URL = 'http://" . $_SITE_URL . "';" .
+             "var SITE_URL = 'http://" . $SITE_URL . "';" .
              "setInterval(counter, 1000);" .
              "</script>";
 
@@ -95,12 +102,12 @@ if ($_POST["claim"] == 1) {
       if ($tx) {
 
         /* Successful transaction, construct the link for client to verify */
-        $str = "<p>Check transaction <a target='_blank' href='http://www.umkoin.org/en/blockexplorer.php?net=" . $network_type . "&txid=" . $tx . "'>here</a>.</p>" .
+        $str = "<p>Check transaction <a target='_blank' href='http://www.umkoin.org/en/blockexplorer.php?net=" . $NET_TYPE . "&txid=" . $tx . "'>here</a>.</p>" .
                "<p class='counter' name='counter' id='counter'>&nbsp;</p>" .
                "<script type='text/javascript' src='js/counter.js'></script>" .
                "<script type='text/javascript'>" .
-               "var TIME_OUT = " . $_TIME_OUT . ";" .
-               "var SITE_URL = 'http://" . $_SITE_URL . "';" .
+               "var TIME_OUT = " . $_TIME_OUT_[$NET_TYPE] . ";" .
+               "var SITE_URL = 'http://" . $SITE_URL . "';" .
                "setInterval(counter, 1000);" .
                "</script>";
 
@@ -116,7 +123,7 @@ if ($_POST["claim"] == 1) {
   } else {
 
     /* Address is invalid, inform the client */
-    $str = "Address " . $_POST["address"] . " is invalid on " . $network_type . ".";
+    $str = "Address " . $_POST["address"] . " is invalid on " . $NET_TYPE . ".";
 
   }
 
