@@ -1,18 +1,23 @@
 <?php
 
-$_SERVER = array(
+$_SERVER_ = array(
     "mainnet" => "http://rpc_mainnet:6332",
     "testnet" => "http://rpc_testnet:16332"
 );
 
-$_AUTH = array(
+$_AUTH_ = array(
     "mainnet" => "rpcmainnet:rpcmainnetpass",
     "testnet" => "rpctestnet:rpctestnetpass"
 );
 
-$_DEBUG = array(
-    "mainnet" => false,
-    "testnet" => true
+$_TIME_OUT_ = array(
+    "mainnet" => 3600,
+    "testnet" => 3600
+);
+
+$_REWARD_ = array(
+    "mainnet" => 0.00001000,
+    "testnet" => 0.00001000
 );
 
 ?>
