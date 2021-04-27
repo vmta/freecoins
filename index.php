@@ -39,7 +39,7 @@ if (empty($block->listreceivedbyaddress()[0]["address"])) {
     }
 }
 /* Test if a wallet has positive balance */
-if ($block->getbalance() < 0.00001000) {
+if ($block->getbalance() < $_REWARD_[$NET_TYPE]) {
     print_r("<p>Deposit UMKoins to address:<br>" . $block->listreceivedbyaddress()[0]["address"] . ".</p>");
     exit();
 }
@@ -94,10 +94,7 @@ if ($_POST["claim"] == 1) {
     } else {
 
       /* User is eligible to claim Free UMKoins */
-
-      $_SATOSHI = 0.00000001;
-      $sum = $_SATOSHI * 1000;
-      $tx = $block->sendtoaddress($_POST["address"], $sum, "Free UMKoins", "Free Claim Player", false, true, 1, "CONSERVATIVE", false);
+      $tx = $block->sendtoaddress($_POST["address"], $_REWARD_[$NET_TYPE], "Free UMKoins", "Free Claim Player", false, true, 1, "CONSERVATIVE", false);
 
       if ($tx) {
 
@@ -114,7 +111,7 @@ if ($_POST["claim"] == 1) {
       } else {
 
         /* Transaction failed */
-        $str = "<p>Failed to send " . $sum . " UMKoins to address " . $_POST["address"] . "</p>";
+        $str = "<p>Failed to send " . $_REWARD_[$NET_TYPE] . " UMKoins to address " . $_POST["address"] . "</p>";
 
       }
 
