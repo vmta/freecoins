@@ -1283,6 +1283,34 @@ class Api {
 
 
   /*
+   * reconsiderblock blockhash
+   *
+   * Removes invalidity status of a block, its ancestors and its descendants,
+   * reconsider them for activation. This can be used to undo the effects of
+   * invalidateblock.
+   *
+   * Arguments:
+   *  1. blockhash    (string, required) The hash of the block to reconsider.
+   *
+   * Result:
+   *  None
+   *
+   * (0.21.1 RPC)
+   *
+   */
+  public function reconsiderblock($blockhash) {
+
+    $args = $this->args;
+    $args[ "method" ] = __FUNCTION__;
+    $args[ "params" ] = [ "$blockhash" ];
+
+    $res = $this->call($args);
+    if ($res)
+      return $res[ "result" ];
+  }
+
+
+  /*
    * savemempool
    *
    * Dumps the mempool to disk. It will fail until the previous dump is fully
