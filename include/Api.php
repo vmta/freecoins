@@ -1398,6 +1398,32 @@ class Api {
 
 
   /*
+   * syncwithvalidationinterfacequeue
+   *
+   * Waits for the validation interface queue to catch up on everything that
+   * was there when we entered this function.
+   *
+   * Arguments:
+   *  None
+   *
+   * Result:
+   *  None
+   *
+   * (0.21.1 RPC)
+   *
+   */
+  public function syncwithvalidationinterfacequeue() {
+
+    $args = $this->args;
+    $args[ "method" ] = __FUNCTION__;
+
+    $res = $this->call($args);
+    if ($res)
+      return $res[ "result" ];
+  }
+
+
+  /*
    * verifychain (checklevel nblocks )
    *
    * Verifies blockchain database.
