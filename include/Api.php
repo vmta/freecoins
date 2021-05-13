@@ -149,6 +149,39 @@ class Api {
 
 
   /*
+   * dumptxoutset path
+   *
+   * Write the serizlized UTXO set to disk.
+   *
+   * Arguments:
+   *  1 path        (string, required) Path to the output file. If relative,
+   *                will be prefixed by datadir.
+   *
+   * Result:
+   *  {
+   *    "coins_written"  (numeric) The number of coins written in the snapshot.
+   *    "base_hash"      (string) The hash of the base of the snapshot.
+   *    "base_height"    (numeric) The height of the base of the snapshot.
+   *    "path"           (string) The absolute path that the snapshot was
+   *                     written to.
+   *  }
+   *
+   * (0.21.1 RPC)
+   *
+   */
+  public function dumptxoutset($path) {
+
+    $args = $this->args;
+    $args[ "method" ] = __FUNCTION__;
+    $args[ "params" ] = [ "$path" ];
+
+    $res = $this->call($args);
+    if ($res)
+      return $res[ "result" ];
+  }
+
+
+  /*
    * getbestblockhash
    *
    * Returns the hash of the best (tip) block in the longest blockchain.
