@@ -1228,6 +1228,34 @@ class Api {
 
 
   /*
+   * invalidateblock blockhash
+   *
+   * Permanently marks a block as invalid, as if it violated a consensus rule.
+   *
+   * Arguments:
+   *  1. blockhash  (string, required) The hash of the block to mark as
+   *                invalid.
+   *
+   * Result:
+   *  None
+   *
+   * (0.21.1 RPC)
+   *
+   */
+  public function invalidateblock($blockhash) {
+
+    $args = $this->args;
+    $args[ "method" ] = __FUNCTION__;
+    $args[ "params" ] = [ "$blockhash" ];
+
+    $res = $this->call($args);
+    if ($res)
+      return $res[ "result" ];
+  }
+
+
+
+  /*
    * preciousblock "blockhash"
    *
    * Treats a block as if it were received before others with the same work.
