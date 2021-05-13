@@ -1464,6 +1464,101 @@ class Api {
   }
 
 
+  /*
+   * waitforblock blockhash timeout
+   *
+   * Waits for a specific new block and returns useful info about it. Returns
+   * the current block on timeout or exit.
+   *
+   * Arguments:
+   *  1. blockhash  (string, required) Block hash to wait for.
+   *  2. timeout    (numeric, optional, default=0) Time in milliseconds to wait
+   *                for a response. 0 indicates no timeout.
+   *
+   * Result:
+   *  {
+   *    "hash": "hash",  (string) The block hash.
+   *    "height": n      (numeric) Height of the block.
+   *  }
+   *
+   * (0.21.1 RPC)
+   *
+   */
+  public function waitforblock($blockhash, $timeout = 0) {
+
+    $args = $this->args;
+    $args[ "method" ] = __FUNCTION__;
+    $args[ "params" ] = [ "$blockhash", $timeout ];
+
+    $res = $this->call($args);
+    if ($res)
+      return $res[ "result" ];
+  }
+
+
+  /*
+   * waitforblockheight height timeout
+   *
+   * Waits for (at least) block height and returns the height and hash of the
+   * current tip. Returns the current block on timeout or exit.
+   *
+   * Arguments:
+   *  1. height     (numeric, required) Block height to wait for.
+   *  2. timeout    (numeric, optional, default=0) Time in milliseconds to wait
+   *                for a response. 0 indicates no timeout.
+   *
+   * Result:
+   *  {
+   *    "hash": "hash",  (string) The block hash.
+   *    "height": n      (numeric) Height of the block.
+   *  }
+   *
+   * (0.21.1 RPC)
+   *
+   */
+  public function waitforblockheight($height, $timeout) {
+
+    $args = $this->args;
+    $args[ "method" ] = __FUNCTION__;
+    $args[ "params" ] = [ $height, $timeout ];
+
+    $res = $this->call($args);
+    if ($res)
+      return $res[ "result" ];
+  }
+
+
+  /*
+   * waitfornewblock timeout
+   *
+   * Waits for a specific new block and returns useful info about it. Returns
+   * the current block on timeout or exit.
+   *
+   * Arguments:
+   *  1. timeout    (numeric, optional, default=0) Time in milliseconds to wait
+   *                for a response. 0 indicates no timeout.
+   *
+   * Result:
+   *  {
+   *    "hash": "hash",  (string) The block hash.
+   *    "height": n      (numeric) Height of the block.
+   *  }
+   *
+   * (0.21.1 RPC)
+   *
+   */
+  public function waitfornewblock($timeout = 0) {
+
+    $args = $this->args;
+    $args[ "method" ] = __FUNCTION__;
+    $args[ "params" ] = [ $timeout ];
+
+    $res = $this->call($args);
+    if ($res)
+      return $res[ "result" ];
+  }
+
+
   ////////////////////////////////////////
   //              CONTROL               //
   ////////////////////////////////////////
