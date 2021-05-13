@@ -2305,6 +2305,39 @@ class Api {
 
 
   /*
+   * addconnection address connection_type
+   *
+   * Open an outbound connection to a specified node. This RPC is for testing
+   * only.
+   *
+   * Arguments:
+   *  1. address          (string, required) The IP address and port to attempt
+   *                      connecting to.
+   *  2. connection_type  (string, required) Type of connection to open, either
+   *                      "outbound-full-relay" or "block-relay-only".
+   *
+   * Result:
+   *  {
+   *    "address"         (string) Address of newly added connection.
+   *    "connection_type" (string) Type of connection opened.
+   *  }
+   *
+   * (0.21.1 RPC)
+   *
+   */
+  public function addconnection($address, $connection_type) {
+
+    $args = $this->args;
+    $args[ "method" ] = __FUNCTION__;
+    $args[ "params" ] = [ "$address", "$connection_type" ];
+
+    $res = $this->call($args);
+    if ($res)
+      return $res[ "result" ];
+  }
+
+
+  /*
    * addnode "node" "add|remove|onetry"
    *
    * Attempts to add or remove a node from the addnode list. Or try a connection
@@ -2329,6 +2362,35 @@ class Api {
     $args = $this->args;
     $args[ "method" ] = __FUNCTION__;
     $args[ "params" ] = [ "$node", "$cmd" ];
+
+    $res = $this->call($args);
+    if ($res)
+      return $res[ "result" ];
+  }
+
+
+  /*
+   * addpeeraddress address port
+   *
+   * Add the address of a potential peer to the address manager. This RPC is
+   * for testing only.
+   *
+   * Arguments:
+   *  1. address    (string, required) The IP address of the peer.
+   *  2. port       (numeric, required) The port of the peer.
+   *
+   * Result:
+   *  success       (boolean) Whether the peer address was successfully added
+   *                to the address manager.
+   *
+   * (0.21.1 RPC)
+   *
+   */
+  public function addpeeraddress($address, $port) {
+
+    $args = $this->args;
+    $args[ "method" ] = __FUNCTION__;
+    $args[ "params" ] = [ "$address", $port ];
 
     $res = $this->call($args);
     if ($res)
