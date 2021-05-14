@@ -2023,6 +2023,105 @@ class Api {
 
 
   /*
+   * estimaterawfee
+   *
+   * WARNING: This interface is unstable and may disappear or change!
+   *
+   * WARNING: This is an advanced API call that is tightly coupled to the
+   * specific implementation of fee estimation. The parameters it can be called
+   * with and the results it returns will change if the internal implementation
+   * changes.
+   *
+   * Estimates the approximate fee per kilobyte needed for a transaction to
+   * begin confirmation within conf_target blocks if possible. Uses virtual
+   * transaction size as defined in BIP 141 (witness data is discounted).
+   *
+   * Arguments:
+   *  1. conf_target    (numeric, required) Confirmation target in blocks
+   *                    (1 - 1008).
+   *  2. threshold      (numeric, optional, default=0.95) The proportion of
+   *                    transactions in a given feerate range that must have
+   *                    been confirmed within conf_target in order to consider
+   *                    those feerates as high enough and proceed to check
+   *                    lower buckets.
+   *
+   * Result:
+   *  {
+   *    "short": {         (json object) Estimate for short time horizon
+   *      "decay": 0.962,  (numeric) Exponential decay (per block) for
+   *                       historical moving average of confirmation data
+   *      "scale": 1,      (numeric) The resolution of confirmation targets at
+   *                       this time horizon
+   *      "pass": {        (json object, optional) Information about the lowest
+   *                       range of feerates to succeed in meeting the threshold
+   *      },
+   *      "fail": {        (json object, optional) Information about the highest
+   *                       range of feerates to fail to meet the threshold
+   *        "startrange": 0,  (numeric) Start of feerate range
+   *        "endrange": 1e+99,  (numeric) End of feerate range
+   *        "withintarget": 13.07,  (numeric) Number of txs over history
+   *                       horizon in the feerate range that were confirmed
+   *                       within target
+   *        "totalconfirmed": 13.07,  (numeric) Number of txs over history
+   *                       horizon in the feerate range that were confirmed at
+   *                       any point
+   *        "inmempool": 0,  (numeric) Current number of txs in mempool in the
+   *                       feerate range unconfirmed for at least target blocks
+   *        "leftmempool": 0  (numeric) Number of txs over history horizon in
+   *                       the feerate range that left mempool unconfirmed
+   *                       after target
+   *      },
+   *      "errors": [      (json object) Errors encountered during processing
+   *                       (if there are any)
+   *        "Insufficient data or no feerate found which meets threshold"
+   *      ]
+   *    },
+   *    "medium": {        (json object) Estimate for medium time horizon
+   *      "feerate": 0.00001000,
+   *      "decay": 0.9952,
+   *      "scale": 2,
+   *      "pass": {
+   *        "startrange": 0,
+   *        "endrange": 1e+99,
+   *        "withintarget": 26.59,
+   *        "totalconfirmed": 26.59,
+   *        "inmempool": 0,
+   *        "leftmempool": 0
+   *      }
+   *    },
+   *    "long": {          (json object) Estimate for long time horizon
+   *      "decay": 0.99931,
+   *      "scale": 24,
+   *      "fail": {
+   *        "startrange": 0,
+   *        "endrange": 1e+99,
+   *        "withintarget": 43.35,
+   *        "totalconfirmed": 43.35,
+   *        "inmempool": 0,
+   *        "leftmempool": 0
+   *      },
+   *      "errors": [
+   *        "Insufficient data or no feerate found which meets threshold"
+   *      ]
+   *    }
+   *  }
+   *
+   * (0.21.1 RPC)
+   *
+   */
+  public function estimaterawfee($conf_target, $threshold = 0.95) {
+
+    $args = $this->args;
+    $args[ "method" ] = __FUNCTION__;
+    $args[ "params" ] = [ $conf_target, $threshold ];
+
+    $res = $this->call($args);
+    if ($res)
+      return $res[ "result" ];
+  }
+
+
+  /*
    * getblocktemplate ( "template_request" )
    *
    * If the request parameters include a 'mode' key, that is used to explicitly
