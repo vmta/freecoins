@@ -1762,7 +1762,7 @@ class Api {
    * (0.21.1 RPC)
    *
    */
-  public function echoipc($arg) {
+  public function echojson($arg) {
 
     $args = $this->args;
     $args[ "method" ] = __FUNCTION__;
@@ -2124,7 +2124,7 @@ class Api {
 
     $args = $this->args;
     $args[ "method" ] = __FUNCTION__;
-    $args[ "params" ] = [ $nblocks, $address, $maxtries);
+    $args[ "params" ] = [ $nblocks, $address, $maxtries ];
 
     $res = $this->call($args);
     if ($res)
@@ -3256,7 +3256,7 @@ class Api {
    * (0.21.1 RPC)
    *
    */
-  publkic function analyzepsbt($psbt) {
+  public function analyzepsbt($psbt) {
 
     $args = $this->args;
     $args[ "method" ] = __FUNCTION__;
@@ -3924,7 +3924,7 @@ class Api {
     if (!empty($options))
       array_push($args[ "params" ], $options);
     if(isset($iswitness))
-      arraY-push($args[ "params" ], $iswitness);
+      array_push($args[ "params" ], $iswitness);
 
     $res = $this->call($args);
     if ($res)
@@ -4689,7 +4689,7 @@ class Api {
 
     $args = $this->args;
     $args[ "method" ] = __FUNCTION__;
-    $args[ "params" ] = [ $nrequired, $key, "$label", "$address_type ];
+    $args[ "params" ] = [ $nrequired, $key, "$label", "$address_type" ];
 
     $res = $this->call($args);
     if ($res)
@@ -6866,9 +6866,7 @@ class Api {
    *                                 replaceable
    *                                 conf_target
    *                                 "estimate_mode"
-   *                                 avoid_reuse
-   *                                 fee_rate
-   *                                 verbose )
+   *                                 avoid_reuse )
    *
    * Send an amount to a given address.
    *
@@ -6897,28 +6895,18 @@ class Api {
    *                 avoid_reuse wallet flag is set) Avoid spending from dirty
    *                 addresses; addresses are considered dirty if they have
    *                 previously been used in a transaction.
-   *  10. fee_rate   (numeric or string, optional, default=not set, fall back to
-   *                 wallet fee estimation) Specify a fee rate in sat/vB.
-   *  11. verbose    (boolean, optional, default=false) If true, return extra
-   *                 information about the transaction.
    *
    * Result:
    * "txid"         (string) The transaction id.
    *
-   * Result (if verbose is set to true):
-   *  {                       (json object)
-   *    "txid" : "hex",       (string) The transaction id.
-   *    "fee reason" : "str"  (string) The transaction fee reason.
-   *  }
-   *
    * (0.21.1 RPC)
    *
    */
-  public function sendtoaddress($address, $amount, $comment = "", $comment_to = "", $subtractfeefromamount = false, $replaceable = true, $conf_target = 1, $estimate_mode = "unset", $avoid_reuse = false, $fee_rate = 1000, $vervose = false) {
+  public function sendtoaddress($address, $amount, $comment = "", $comment_to = "", $subtractfeefromamount = false, $replaceable = true, $conf_target = 6, $estimate_mode = "UNSET", $avoid_reuse = false) {
 
     $args = $this->args;
     $args[ "method" ] = __FUNCTION__;
-    $args[ "params" ] = [ "$address", $amount, "$comment", "$comment_to", $subtractfeefromamount, $replaceable, $conf_target, "$estimate_mode", $avoid_reuse, $fee_rate, $verbose ];
+    $args[ "params" ] = [ "$address", $amount, "$comment", "$comment_to", $subtractfeefromamount, $replaceable, $conf_target, "$estimate_mode", $avoid_reuse ];
 
     $res = $this->call($args);
     if ($res)
