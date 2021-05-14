@@ -1680,6 +1680,101 @@ class Api {
 
 
   /*
+   * echo arg0 arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9
+   *
+   * Simply echo back the input arguments. This command is for testing. It will
+   * return an internal bug report when arg9='trigger_internal_bug' is passed.
+   * The difference between echo and echojson is that echojson has argument
+   * conversion enabled in the client-side table in umkcoin-cli and the GUI.
+   * There is no server-side difference.
+   *
+   * Arguments:
+   *  1. arg0       (string, optional)
+   *  2. arg1       (string, optional)
+   *  3. arg2       (string, optional)
+   *  4. arg3       (string, optional)
+   *  5. arg4       (string, optional)
+   *  6. arg5       (string, optional)
+   *  7. arg6       (string, optional)
+   *  8. arg7       (string, optional)
+   *  9. arg8       (string, optional)
+   *  10. arg9      (string, optional)
+   *
+   * Result:
+   *  [           (json object) Returns whatever was passed in.
+   *    "str0"
+   *    ,...
+   *  ]
+   *
+   * (0.21.1 RPC)
+   *
+   */
+  public function echo($arg0 = "", $arg1 = "", $arg2 = "", $arg3 = "", $arg4 = "", $arg5 = "", $arg6 = "", $arg7 = "", $arg8 = "", $arg9 = "") {
+
+    $args = $this->args;
+    $args[ "method" ] = __FUNCTION__;
+    $args[ "params" ] = [ "$arg0", "$arg1", "$arg2", "$arg3", "$arg4", "$arg5", "$arg6", "$arg7", "$arg8", "$arg9" ];
+
+    $res = $this->call($args);
+    if ($res)
+      return $res[ "result" ];
+  }
+
+
+  /*
+   * echoipc arg
+   *
+   * Echo back the input argument, passing it through a spawned process in a
+   * multiprocess build. This command is for testing.
+   *
+   * Arguments:
+   *  1. arg        (string, required) The string to echo.
+   *
+   * Result:
+   *  str           (string) The echoed string.
+   *
+   * (0.21.1 RPC)
+   *
+   */
+  public function echoipc($arg) {
+
+    $args = $this->args;
+    $args[ "method" ] = __FUNCTION__;
+    $args[ "params" ] = [ "$arg" ];
+
+    $res = $this->call($args);
+    if ($res)
+      return $res[ "result" ];
+  }
+
+
+  /*
+   * echojson arg
+   *
+   * Echo back the input json object argument. This command is for testing.
+   *
+   * Arguments:
+   *  1. arg        (json object, required) The json object to echo.
+   *
+   * Result:
+   *  obj           (json object) The echoed json object.
+   *
+   * (0.21.1 RPC)
+   *
+   */
+  public function echoipc($arg) {
+
+    $args = $this->args;
+    $args[ "method" ] = __FUNCTION__;
+    $args[ "params" ] = [ $arg ];
+
+    $res = $this->call($args);
+    if ($res)
+      return $res[ "result" ];
+  }
+
+
+  /*
    * getmemoryinfo ( "mode" )
    *
    * Returns an object containing information about memory usage.
@@ -1854,6 +1949,61 @@ class Api {
       $args[ "params" ] = [ $incl ];
     if (!empty($excl))
       array_push($args[ "params" ], $excl);
+
+    $res = $this->call($args);
+    if ($res)
+      return $res[ "result" ];
+  }
+
+
+  /*
+   * mockscheduler delta_time
+   *
+   * Bump the scheduler into the future (-regtest only).
+   *
+   * Arguments:
+   *  1. delta_time  (numeric, required) Number of seconds to forward the
+   *                 scheduler into the future.
+   *
+   * Result:
+   *  None
+   *
+   * (0.21.1 RPC)
+   *
+   */
+  public function mockscheduler($delta_time) {
+
+    $args = $this->args;
+    $args[ "method" ] = __FUNCTION__;
+    $args[ "params" ] = [ $delta_time ];
+
+    $res = $this->call($args);
+    if ($res)
+      return $res[ "result" ];
+  }
+
+
+  /*
+   * setmocktime timestamp
+   *
+   * Set the local time to given timestamp (-regtest only).
+   *
+   * Arguments:
+   *  1. delta_time  (numeric, required) Number of seconds expressed in UNIX
+   *                 epoch time format (Jan 1 1970 GMT). Pass 0 to go back to
+   *                 using the system time.
+   *
+   * Result:
+   *  None
+   *
+   * (0.21.1 RPC)
+   *
+   */
+  public function setmocktime($timestamp) {
+
+    $args = $this->args;
+    $args[ "method" ] = __FUNCTION__;
+    $args[ "params" ] = [ $timestamp ];
 
     $res = $this->call($args);
     if ($res)
