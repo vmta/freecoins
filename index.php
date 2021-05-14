@@ -39,7 +39,7 @@ if (empty($block->listreceivedbyaddress()[0]["address"])) {
     }
 }
 /* Test if a wallet has positive balance */
-if ($block->getbalance() < $_REWARD_[$NET_TYPE]) {
+if ($block->getbalances()["mine"]["trusted"] < $_REWARD_[$NET_TYPE]) {
     print_r("<p>Deposit UMKoins to address:<br>" . $block->listreceivedbyaddress()[0]["address"] . ".</p>");
     exit();
 }
@@ -94,7 +94,7 @@ if ($_POST["claim"] == 1) {
     } else {
 
       /* User is eligible to claim Free UMKoins */
-      $tx = $block->sendtoaddress($_POST["address"], $_REWARD_[$NET_TYPE], "Free UMKoins", "Free Claim Player", false, true, 1, "CONSERVATIVE", false);
+      $tx = $block->sendtoaddress($_POST["address"], $_REWARD_[$NET_TYPE], "Free UMKoins", "Free Claim Player");
 
       if ($tx) {
 
