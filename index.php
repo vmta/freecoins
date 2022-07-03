@@ -4,8 +4,8 @@
 <head>
     <title>Claim Free UMKoins</title>
 
-    <link rel="stylesheet" href="css/common.css" />
-    <link rel="shortcut icon" href="css/favicon.png" />
+    <link rel="icon" href="css/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="css/common.css" type="text/css" />
 </head>
 
 <body>
